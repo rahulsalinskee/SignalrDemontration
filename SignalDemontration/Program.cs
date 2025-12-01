@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SignalDemontration.Data;
+using SignalDemontration.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+/* Add SignalR Services */
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -39,6 +43,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+/* This route has to be exactly same as the route in the client side (In JavaScript code - "new signalR.HubConnectionBuilder().withUrl('/Hubs/userCount').build()") */
+app.MapHub<UserHub>("/Hubs/userCount");
 
 app.MapRazorPages()
    .WithStaticAssets();
