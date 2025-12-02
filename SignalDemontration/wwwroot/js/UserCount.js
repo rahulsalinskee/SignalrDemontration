@@ -9,8 +9,13 @@ var connectionUserCount = new signalR.HubConnectionBuilder().withUrl("/Hubs/user
 *       On method (First parameter) - Copy the name from the method SendAsync in Hub and paste it here
 *       GetElementById parameter (ID Name) - Copy the ID name from Index.cshtml and paste it here
 */
-connectionUserCount.on("UpdateTotalViews", function (userCount) {
+connectionUserCount.on("UpdateTotalViews", function (viewCount) {
     var newCountSpan = document.getElementById("totalViewsCounter");
+    newCountSpan.innerText = viewCount.toString();
+});
+
+connectionUserCount.on("UpdateTotalUsers", function (userCount) {
+    var newCountSpan = document.getElementById("totalUsersCounter");
     newCountSpan.innerText = userCount.toString();
 });
 
